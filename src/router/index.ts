@@ -1,15 +1,21 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createWebHistory, createRouter } from 'vue-router';
+// import FormView from '@/views/FormView/index.vue';
+// import ProfileView from '@/views/ProfileView/index.vue';
+// import TodoView from '@/views/TodoView/index.vue';
+
+const routes = [
+    { path: '/', redirect: '/todo' },
+    { path: '/todo', component: () => import('@/views/TodoView/index.vue') },
+    { path: '/form', component: () => import('@/views/FormView/index.vue') },
+    {
+        path: '/profile',
+        component: () => import('@/views/ProfileView/index.vue'),
+    },
+];
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [
-        { path: '/todo', component: () => import('@/views/todo/index.vue') },
-        { path: '/form', component: () => import('@/views/form/index.vue') },
-        {
-            path: '/profile',
-            component: () => import('@/views/profile/index.vue'),
-        },
-    ],
+    history: createWebHistory(),
+    routes,
 });
 
 export default router;
