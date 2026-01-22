@@ -42,6 +42,26 @@ const handleClick = (tab: { props: { name: string } }) => {
             break;
     }
 };
+
+const activeMenu = computed(() => {
+    if (route.path === '/form') return '2';
+    if (route.path === '/profile') return '3';
+    return '1';
+});
+
+const handerMenuSelect = (index: string) => {
+    switch (index) {
+        case '1':
+            router.push('/todo');
+            break;
+        case '2':
+            router.push('/form');
+            break;
+        case '3':
+            router.push('/profile');
+            break;
+    }
+};
 </script>
 
 <template>
@@ -50,22 +70,23 @@ const handleClick = (tab: { props: { name: string } }) => {
             <el-aside width="200px">
                 <h3 class="mb-2">ToDoList</h3>
                 <el-menu
-                    default-active="2"
+                    :default-active="activeMenu"
                     class="el-menu-vertical-demo"
                     @open="handleOpen"
                     @close="handleClose"
+                    @select="handerMenuSelect"
                 >
                     <el-menu-item index="1">
                         <template #title>
                             <el-icon><location /></el-icon>
                             <span>待办清单</span>
-                        </template>                                           
+                        </template>
                     </el-menu-item>
                     <el-menu-item index="2">
                         <el-icon><icon-menu /></el-icon>
                         <span>表单填写</span>
                     </el-menu-item>
-                    <el-menu-item index="3" >
+                    <el-menu-item index="3">
                         <el-icon><document /></el-icon>
                         <span>已完成</span>
                     </el-menu-item>
@@ -81,7 +102,7 @@ const handleClick = (tab: { props: { name: string } }) => {
                         <el-tab-pane
                             label="待办清单"
                             name="first"
-                        ></el-tab-pane>
+                        >待办清单</el-tab-pane>
                         <el-tab-pane
                             label="表单填写"
                             name="second"
@@ -91,7 +112,7 @@ const handleClick = (tab: { props: { name: string } }) => {
                             name="third"
                         ></el-tab-pane></el-tabs
                 ></el-header>
-                <el-main>待办清单</el-main>
+                <el-main></el-main>
             </el-container>
         </el-container>
     </div>
