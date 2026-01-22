@@ -11,6 +11,10 @@ const routes = [
         path: '/profile',
         component: () => import('@/views/ProfileView/index.vue'),
     },
+    {
+        path: '/user',
+        component: () => import('@/views/UserInfo/index.vue'),
+    },
 ];
 
 const router = createRouter({
