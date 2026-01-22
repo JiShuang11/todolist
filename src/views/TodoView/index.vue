@@ -2,13 +2,15 @@
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+// 导入Todo的数据结构
+import type { Todo } from '@/services/todo';
+
 import {
     Document,
     Menu as IconMenu,
     Location,
     Setting,
 } from '@element-plus/icons-vue';
-
 const handleOpen = (key: string, keyPath: string[]) => {
     console.log(key, keyPath);
 };
@@ -18,6 +20,7 @@ const handleClose = (key: string, keyPath: string[]) => {
 const route = useRoute();
 const router = useRouter();
 
+// tab路由联动
 const activeName = computed({
     get() {
         if (route.path === '/profile') return 'third';
@@ -26,7 +29,6 @@ const activeName = computed({
     },
     set() {},
 });
-
 const handleClick = (tab: { props: { name: string } }) => {
     console.log(tab.props.name);
 
@@ -42,13 +44,12 @@ const handleClick = (tab: { props: { name: string } }) => {
             break;
     }
 };
-
+// 侧边栏路由联动
 const activeMenu = computed(() => {
     if (route.path === '/form') return '2';
     if (route.path === '/profile') return '3';
     return '1';
 });
-
 const handerMenuSelect = (index: string) => {
     switch (index) {
         case '1':
@@ -62,11 +63,22 @@ const handerMenuSelect = (index: string) => {
             break;
     }
 };
+
+const todos = ref<Todo[]>([]);
+const newTodo = ref<Todo>({
+    id: Date.now(),
+    title: '',
+    completed: false,
+});
+const addTodo = (item: Todo) => {
+    todos.value.push(item)
+}
 </script>
 
 <template>
     <div class="common-layout">
         <el-container>
+            <!-- 侧边栏 -->
             <el-aside width="200px">
                 <h3 class="mb-2">ToDoList</h3>
                 <el-menu
@@ -94,15 +106,15 @@ const handerMenuSelect = (index: string) => {
             </el-aside>
             <el-container>
                 <el-header>
+                    <!-- tab -->
                     <el-tabs
                         v-model="activeName"
                         class="demo-tabs"
                         @tab-click="handleClick"
                     >
-                        <el-tab-pane
-                            label="待办清单"
-                            name="first"
-                        >待办清单</el-tab-pane>
+                        <el-tab-pane label="待办清单" name="first"
+                            >待办清单</el-tab-pane
+                        >
                         <el-tab-pane
                             label="表单填写"
                             name="second"
