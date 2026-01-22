@@ -2,6 +2,9 @@
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useTodoStore } from '@/stores/todo';
+import TodoList from '@/views/TodoView/components/TodoList.vue';
 import {
     Document,
     Menu as IconMenu,
@@ -62,6 +65,9 @@ const handerMenuSelect = (index: string) => {
             break;
     }
 };
+
+const todoStore = useTodoStore();
+const { completedTodos } = storeToRefs(todoStore);
 </script>
 
 <template>
@@ -110,7 +116,9 @@ const handerMenuSelect = (index: string) => {
                         <el-tab-pane
                             label="已完成"
                             name="third"
-                        >已完成</el-tab-pane></el-tabs
+                        ><!-- 传递list数据 -->
+                            <TodoList :list="completedTodos"
+                        /></el-tab-pane></el-tabs
                 ></el-header>
                 <el-main></el-main>
             </el-container>

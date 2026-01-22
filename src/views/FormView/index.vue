@@ -2,6 +2,9 @@
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+// 导入Todo的数据结构
+import { useTodoStore } from '@/stores/todo';
+import TodoInput from '@/views/TodoView/components/TodoInput.vue';
 import {
     Document,
     Menu as IconMenu,
@@ -17,6 +20,7 @@ const handleClose = (key: string, keyPath: string[]) => {
 };
 const route = useRoute();
 const router = useRouter();
+const todoStore = useTodoStore();
 
 const activeName = computed({
     get() {
@@ -62,6 +66,13 @@ const handerMenuSelect = (index: string) => {
             break;
     }
 };
+
+const handleAdd = (title: string) => {
+    // 存到公共仓库
+    todoStore.addTodo(title);
+    // 跳回列表页看结果
+    router.push('/todo');
+};
 </script>
 
 <template>
@@ -104,8 +115,9 @@ const handerMenuSelect = (index: string) => {
                             name="first"
                         ></el-tab-pane>
                         <el-tab-pane label="表单填写" name="second"
-                            >表单填写</el-tab-pane
-                        >
+                            ><!-- 监听@add事件，触发handleAdd（子传父） -->
+                            <TodoInput @add="handleAdd"
+                        /></el-tab-pane>
                         <el-tab-pane
                             label="已完成"
                             name="third"

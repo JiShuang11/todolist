@@ -2,8 +2,9 @@
 import { ref } from 'vue';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-// 导入Todo的数据结构
-import type { Todo } from '@/services/todo';
+import { storeToRefs } from 'pinia';
+import { useTodoStore } from '@/stores/todo';
+import TodoList from './components/TodoList.vue';
 
 import {
     Document,
@@ -64,15 +65,10 @@ const handerMenuSelect = (index: string) => {
     }
 };
 
-const todos = ref<Todo[]>([]);
-const newTodo = ref<Todo>({
-    id: Date.now(),
-    title: '',
-    completed: false,
-});
-const addTodo = (item: Todo) => {
-    todos.value.push(item)
-}
+const todoStore = useTodoStore();
+const { pendingTodos } = storeToRefs(todoStore);
+
+
 </script>
 
 <template>
@@ -113,8 +109,9 @@ const addTodo = (item: Todo) => {
                         @tab-click="handleClick"
                     >
                         <el-tab-pane label="待办清单" name="first"
-                            >待办清单</el-tab-pane
-                        >
+                            ><!-- 传递list数据 -->
+                            <TodoList :list="pendingTodos"
+                        /></el-tab-pane>
                         <el-tab-pane
                             label="表单填写"
                             name="second"
