@@ -66,9 +66,8 @@ const handerMenuSelect = (index: string) => {
 };
 
 const todoStore = useTodoStore();
-const { pendingTodos } = storeToRefs(todoStore);
-
-
+const { pendingTodos, totalCount, pendingCount, completedCount } =
+    storeToRefs(todoStore);
 </script>
 
 <template>
@@ -109,7 +108,14 @@ const { pendingTodos } = storeToRefs(todoStore);
                         @tab-click="handleClick"
                     >
                         <el-tab-pane label="待办清单" name="first"
-                            ><!-- 传递list数据 -->
+                            ><div class="start-bar">
+                                <span>总计：{{ totalCount }}</span>
+                                <el-divider direction="vertical" />
+                                <span>待办：{{ pendingCount }}</span>
+                                <el-divider direction="vertical" />
+                                <span>已完成：{{ completedCount }}</span>
+                            </div>
+                            <!-- 传递list数据 -->
                             <TodoList :list="pendingTodos"
                         /></el-tab-pane>
                         <el-tab-pane
